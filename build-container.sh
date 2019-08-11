@@ -74,8 +74,11 @@ sudo systemd-nspawn -D $container_dir /bin/sh -c 'cat /opt/scripts/* | bash -x'
 sudo rm -R $container_dir/opt/scripts
 
 mkdir ./build || true
-sudo tar --create --file './build/'$container_name'.tar.gz' \
+cd ./build
+sudo tar --create --xz --file $container_name'.tar.xz' \
     --directory $container_dir --xattrs -v .
-sudo cp ./webserver.nspawn './build/'$container_name'.nspawn'
+sudo cp ../webserver.nspawn $container_name'.nspawn'
+sha256sum * > $container_name'.tar.xz.sha256'
+cd ..
 
 sudo rm -Rf $container_dir
