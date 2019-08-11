@@ -1,0 +1,29 @@
+{
+    "folders":
+    [
+        {
+            "path": ".",
+
+            "folder_exclude_patterns": [
+                "build",
+            ],
+            "file_exclude_patterns": [
+                ".gitignore",
+                ".hidden",
+                "*.sublime-*",
+            ],
+        },
+    ],
+
+    "settings":
+    {
+        "default_line_ending": "unix",
+        "detect_indentation": true,
+        "ensure_newline_at_eof_on_save": true,
+        "rulers": [80, 120],
+        "tab_size": 4,
+        "translate_tabs_to_spaces": true,
+        "trim_trailing_white_space_on_save": true,
+        "word_wrap": true,
+    }
+}
