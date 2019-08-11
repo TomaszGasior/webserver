@@ -1,0 +1,21 @@
+# This file must be copied manually to /etc/systemd/nspawn directory.
+
+[Files]
+# Example lines which you can uncomment and adjust to share specified
+# directores with the container. Your files must be owned by user with
+# UID 1000 or you must change UID of "user" user inside container.
+; Bind=/home/tomasz/projects:/srv
+; Bind=/home/tomasz/projects/wordpress:/srv/wordpress
+; Bind=/home/tomasz/projects/my-wp-theme:/srv/wordpress/wp-content/themes/my-wp-theme
+
+# Uncomment following line if are you using Arch Linux as host system
+# to share pacman cache and improve package manager performance.
+; Bind=/var/cache/pacman/pkg
+
+[Exec]
+Boot=on
+PrivateUsers=off
+
+[Network]
+Private=off
+VirtualEthernet=off

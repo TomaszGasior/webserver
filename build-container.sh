@@ -70,7 +70,8 @@ sudo systemd-nspawn -D $container_dir /bin/sh -c 'cat /opt/scripts/* | bash -x'
 sudo rm -R $container_dir/opt/scripts
 
 mkdir ./build || true
-sudo tar --create --file ./build/$container_name'.tar.gz' \
-    --directory $container_dir --xattrs -v  .
+sudo tar --create --file './build/'$container_name'.tar.gz' \
+    --directory $container_dir --xattrs -v .
+sudo cp ./webserver.nspawn './build/'$container_name'.nspawn'
 
 sudo rm -Rf $container_dir
