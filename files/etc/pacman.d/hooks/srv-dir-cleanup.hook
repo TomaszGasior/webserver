@@ -1,0 +1,10 @@
+[Trigger]
+Type = Package
+Target = filesystem
+Operation = Install
+Operation = Upgrade
+
+[Action]
+Description = Removing /srv/http and /srv/ftp empty directories
+When = PostTransaction
+Exec = /bin/rmdir /srv/http /srv/ftp
