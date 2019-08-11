@@ -61,9 +61,13 @@ container_dir='/tmp/'$container_name
 
 sudo mkdir $container_dir
 
-sudo pacstrap -icG $container_dir --noconfirm \
+sudo pacstrap -i -c -G -M $container_dir --noconfirm \
     ${base_os_packages[*]} ${extra_os_packages[*]} ${container_packages[*]}
 sudo cp -Rn files/* $container_dir
+
+sudo rm $container_dir/var/lib/pacman/sync/*
+sudo reflector --latest 20 --sort rate --number 10 \
+    --save $container_dir/etc/pacman.d/mirrorlist
 
 sudo cp -Rn scripts $container_dir/opt
 sudo systemd-nspawn -D $container_dir /bin/sh -c 'cat /opt/scripts/* | bash -x'
