@@ -56,29 +56,30 @@ base_os_packages=(
     which
 )
 
-container_name='webserver-'$(date +%Y-%m-%d-%H-%M-%S)
-container_dir='/tmp/'$container_name
+container_name='webserver'
+container_id=$(date +%Y-%m-%d-%H-%M-%S)
+container_fs_dir='/tmp/'$container_name'-'$container_id
 
-sudo mkdir $container_dir
+sudo mkdir $container_fs_dir
 
-sudo pacstrap -i -c -G -M $container_dir --noconfirm \
+sudo pacstrap -i -c -G -M $container_fs_dir --noconfirm \
     ${base_os_packages[*]} ${extra_os_packages[*]} ${container_packages[*]}
-sudo cp -Rn files/* $container_dir
+sudo cp -Rn files/* $container_fs_dir
 
-sudo rm $container_dir/var/lib/pacman/sync/*
+sudo rm $container_fs_dir/var/lib/pacman/sync/*
 sudo reflector --latest 20 --sort rate --number 10 \
-    --save $container_dir/etc/pacman.d/mirrorlist
+    --save $container_fs_dir/etc/pacman.d/mirrorlist
 
-sudo cp -Rn scripts $container_dir/opt
-sudo systemd-nspawn -D $container_dir /bin/sh -c 'cat /opt/scripts/* | bash -x'
-sudo rm -R $container_dir/opt/scripts
+sudo cp -Rn scripts $container_fs_dir/opt
+sudo systemd-nspawn -D $container_fs_dir /bin/sh -c 'cat /opt/scripts/* | bash -x'
+sudo rm -R $container_fs_dir/opt/scripts
 
-mkdir ./build || true
-cd ./build
+mkdir './build-'$container_id
+cd './build-'$container_id
 sudo tar --create --xz --file $container_name'.tar.xz' \
-    --directory $container_dir --xattrs -v .
+    --directory $container_fs_dir --xattrs -v .
 sudo cp ../webserver.nspawn $container_name'.nspawn'
 sha256sum * > $container_name'.tar.xz.sha256'
 cd ..
 
-sudo rm -Rf $container_dir
+sudo rm -Rf $container_fs_dir
